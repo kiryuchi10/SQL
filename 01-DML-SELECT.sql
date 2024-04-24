@@ -40,3 +40,142 @@ SELECT first_name,
     job_id,
     job_id*12
 From employees;
+
+--NVL 활용 대체값 계산
+SELECT first_name,salary, commission_pct,
+    salary+salary*NVL(commission_pct,0) -- NVL null 이면 0, null 아니면 commission_pct
+FROM employees;
+
+--null은 0이나 ""와 다르게 빈 값이다. 
+
+--별칭 alias
+--projection 단계에서 출력용으로 표시되는 임시 컬럼 제목
+
+--컬럼명 뒤에 별칭
+--컬럼명 뒤에 as 별칭
+--표시명에 특수문자 포한된 경우 ""로 묶어서 부여
+
+--직원 아이디, 이름, 급여 출력
+--직원 아이디는 empNo 이름은 f_name, 급여는 dnjfrmqdmfh vytl
+
+SELECT employee_id empNo
+    ,first_name as "f-name"
+    ,salary as "급여"
+FROM employees;
+
+--직원 이름(first_name, last_name 합쳐서 출력) name
+-- 급여 (커미션이 포함된 급여), 급여 *12 연봉 별칭으로 표기
+
+SELECT first_name+last_name,
+    salary+salary*nvl(commission_pct,0),
+    salary*12
+FROM employees;
+
+SELECT first_name ||' '|| last_name "Full Name",
+       salary+salary*nvl(commission_pct,0),
+    salary*12
+FROM employees;
+
+--연습 : alias 붙이기 (employees 테이블)
+--이름:
+
+SELECT first_name ||' '|| last_name as "이름" ,
+    hire_date 입사일 , phone_number 전화번호, 
+    salary 급여,salary*12 연봉 
+FROM employees;
+
+--where
+--특정 조건을 기준으로 레코드를 선택 (Selection)
+--비교연산 , =,<>,>,<,<=
+
+--사원들 중에서 급여가 15000 이상인 직원과
+
+SELECT first_name,salary 
+FROM employees
+Where salary >15000;
+
+--입사일이 07/01/01 이후인 직원들의 이름과 입사일
+SELECT 
+    first_name, hire_date
+FROM employees
+WHERE hire_date>='17/01/01';
+
+SELECT
+    first_name,salary
+FROM employees
+WHERE salary <=4000
+    or
+      salary>=17000;
+
+SELECT
+    first_name,salary
+FROM employees
+WHERE salary >=14000
+    AND
+      salary<17000;
+
+--BETWEEN :범위 비교
+
+SELECT
+    first_name,salary
+FROM employees
+WHERE salary BETWEEN 14000 AND 17000;
+
+
+-- Null 체크, =,<> 사용하면 안도미
+--IS NULL, IS NOT NULL
+
+--commission을 받지 않는 사람들 (commission_pct =NULL)
+SELECT first_name,commission_pct
+FROM employees 
+WHERE commission_pct IS NULL;
+
+SELECT first_name,commission_pct
+FROM employees 
+WHERE commission_pct IS NOT NULL;
+
+SELECT first_name, department_id 
+FROM employees
+WHERE department_id = 10 OR 
+      department_id =20  OR    
+      department_id =40;
+    
+-- In 연산자 : 특정 집합의 요소 비교
+SELECT first_name, department_id 
+FROM employees
+WHERE department_id IN (10,20,40);
+
+----------
+--Like 연산
+----------
+--와일드카드 (%,_)를 이용한 부분 문자열 매핑
+--% : 0 개 이상의 정해지지 않는 문자열
+--_ : 1개의 정해지지 않는 문자
+
+--이름에 am을 포함하고 있는 사원의 이름과 급여 출력
+SELECT first_name, salary 
+FROM employees
+WHERE LOWER(first_name) LIKE  '%am%';
+
+-- 이름의 두번 째의 글자가 a인 사원의 이름과 급여
+
+SELECT first_name, salary 
+FROM employees
+WHERE LOWER(first_name) LIKE  '_a%';
+
+--이름의 4번째 글자가 a인 사원
+
+--이름이 4글자인 사원 중에서 두번째 글자가 a인 사원의 이름과 급여
+
+
+
+
+
+
+
+
+
+
+
+
+
