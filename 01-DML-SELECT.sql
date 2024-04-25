@@ -210,14 +210,109 @@ ORDER BY department_id ASC,salary DESC;
 
 -- 정렬 기준을 어떻게 세우느냐에 따라 성능, 출력 결과 영향을 미칠 수 있다
 
+--문자열 단일행 함수
+SELECT first_name,last_name
+FROM employees;
+
+SELECT first_name,last_name,
+    CONCAT(first_name,CONCAT(' ',last_name)),
+    first_name||' '|| last_name,
+    INITCAP(first_name ||' '||last_name)
+FROM employees;
+
+SELECT first_name,last_name,
+    LOWER(first_name),-- 모두 소문자로
+    UPPER(first_name),-- 모두 대문자로 
+    LPAD(first_name,20,'*'),-- *로 빈자리채우기 왼쪽
+    RPAD(first_name,20,'*')
+FROM employees;
+
+SELECT '   Oracle  ',
+    '*******Database*********',
+    LTRIM('             Oracle          '),
+    LTRIM('             Oracle          '),
+    SUBSTR('Oracle Database',8,4),
+    SUBSTR('Oracle Database',-8,4),
+    LENGTH('Oracle Database')
+FROM dual;
+
+SELECT 3.14159,
+    ABS(-3.14),
+    CEIL(3.14),--올림
+    FLOOR(3.14),--버림
+    ROUND(3.14159,3),
+    ROUND(3.5),
+    TRUNC(3.5),
+    TRUNC(3.14159,3), --소수점 네째 자리에서 버림
+    SIGN(-3.14159), --부호 (-1: 음수, 0:), 1:양수)
+    MOD(7,3),
+    POWER(2,4)
+FROM dual;
+
+--쟈네
+SELECT * 
+FROM nls_session_parameters;
 
 
 
 
+--DATa Formtat
+SELECT value FROM nls_session_parameters
+WHERE parameter='NLS_Date_Format';
 
 
+SELECT sysdate FROM dual;
+SELECT sysdate FROM employees;
 
+--SELECT
+--    sysdate,
+--    ADD_MONTHS(sysdate,2),
+--    Last_day(sysdate),
+--    MONTHS_BETWEEN('12/09/24',sysdate),-- 두 날짜 사이의 개월 차
+--    NEXT_DAY(sysdate,7),
+--    ROUND(sysdate,'MONTH'),
+--    TRUNCATE(sysdate,'MON)
+--FROM DUAl;
 
+SELECT first_name,hire_date,
+    ROUND(MONTHS_BETWEEN(sysdate,hire_date)) as 근속일수
+FROM employees;
 
+SELECT first_name,to_char(salary*12,'$999,99.00') "SAL"
+FROM employees
+WHERE department_id=110;
 
+----------------
+---변환함수
+----------------
 
+--TO_NUMBERS(s,fmt) : 문자열 -> 숫자
+--TO_DATE
+--TO_CHAR(o,smt)
+
+SELECT first_name,
+    TO_CHAR(hire_date, 'YYYY-MM-DD')
+FROM employees;
+
+SELECT sysdate,
+    TO_CHAR(sysdate, 'YYYY--MM-DD HH:MI:SS')
+FROM dual;
+
+SELECT 
+    TO_CHAR(3000000,'L999,999,999.99')
+FROM dual;
+
+--모든 직원의 이름과 연봉 정보를 표시
+SELECT
+    first_name, salary,commission_pct,TO_CHAR(salary+salary* nvl(commission_pct,0)*12, '$999,999.99') 연봉
+FROM employees;
+
+--문자 -> 숫자 : TO_NUMBER
+SELECT '$57,600',
+    TO_NUMBER('$57,600','$999,999')/12 월급
+FROM dual;
+
+--문자열 -> 날짜 
+SELECT '2012-09-24 13:48:00', 
+    TO_DATE('2012-09-24 13:48:00','YYYY-MM-DD HH24:MI:SS')
+FROM dual;
