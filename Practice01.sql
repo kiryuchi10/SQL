@@ -40,11 +40,11 @@ ORDER BY LENGTH(department_name) DESC;
 --ex09
 SELECT UPPER(country_name) 나라
 FROM countries
-ORDER BY country_name ASC;
+ORDER BY UPPER(country_name) ASC;
 --ex10
 SELECT first_name,salary,phone_number,hire_date,
         SUBSTR(REPLACE(phone_number,'.','-'),3) 전화번호
-FROM employees;
+FROM employees
 WHERE hire_date < TO_DATE('13/12/31', 'YY/MM/DD');
 
 
