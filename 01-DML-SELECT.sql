@@ -360,6 +360,9 @@ SELECT first_name, job_id, salary,
                         salary*0.05) bonus
 FROM employees;
 
+
+
+
 --연습문제
 --직원의 이름, 부서, 팀을 출력
 --팀은 부서 아이디로 결정 
@@ -372,4 +375,5 @@ SELECT first_name||' '||last_name,department_id,
     END 팀
 FROM employees
 ORDER BY 팀 ASC, 부서 ASC;
-        
+
+
