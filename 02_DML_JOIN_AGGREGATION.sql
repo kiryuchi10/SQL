@@ -192,4 +192,149 @@ FROM employees emp
                 JOIN jobs j
                     ON emp.job_id=j.job_id
 ORDER BY emp.employee_id ASC;    
-    
+
+-----------------
+--Griuo Aggregatiib
+--집계 : 여러 행으로부터 데이터를 수집, 하나의 행으로 반환
+
+--COUNT
+--employees
+
+SELECT COUNT(*) FROM employees;
+
+--*로 카운트 하면 모든 행의 수를 반환
+-- 특정 컬럼 내에 null 값이 포함되어 있는지의 여부는 중요하지 않음
+
+-- commission을 받는 직원의 수를 알고 싶을 경우
+-- commission_pct가 null인 경우를 제외하고 싶을 경우
+SELECT COUNT(commission_pct) FROM employees;
+-- 컬럼 내에 포함된 null 데이터를 카운트하지 않음
+
+--위 쿼리는 아래 쿼리와 같다 
+SELECT COUNT(*) FROM employees
+WHERE commission_pct IS NOT NULL;
+
+
+--sum : 합계 함수
+-- 모든 사원의 급여의 합계
+SELECT SUM(salary) FROM employees;
+
+
+--AVG: 평균함수
+--사원들의 평균 급여?
+SELECT AVG(salary) FROM employees;
+
+SELECT AVG(commission_pct) FROM employees;
+
+--AVG 함수는 ㅜㅕㅣㅣ rkqdl vhgkaehldj dlTdmf ruddn rm rkqtdmf wlqrP tncldptj wpdhl
+-- null 갑승 ㄹ집계 결과에 포함시킬지의 여부는 정책으로 결정하고 수행해야한다. 
+
+SELECT 
+    MIN(salary),
+    MAX(salary),
+    AVG(salary),
+    MEDIAN(salary)
+FROM employees;
+
+SELECT department_id,AVG(salary)
+FROM employees;
+
+SELECT department_id FROM employees;
+SELECT AVG(salary) FROM employees;
+SELECT department_id,salary
+FROM employees
+ORDER BY department_id;
+
+SELECT department_id,AVG(salary)
+FROM employees
+GROUP BY department_id
+ORDER BY department_id ASC;
+
+
+-- 부서별 평균 급여에 부서명도 포함하여 출력
+SELECT emp.department_id, dept.department_name, ROUND(AVG(salary),2)
+FROM employees emp
+    JOIN departments dept
+        ON emp.department_id=dept.department_id
+GROUP BY emp.department_id,dept.department_name
+ORDER BY emp.department_id;
+
+-- GROUP BY 절 이후 GROUP BY에 참여한 컬럼과 집계 함수만 남는다. 
+
+-- 평균 급여가 7000 이상인 부서만 출력
+SELECT 
+    department_id,AVG(salary)
+FROM employees
+GROUP BY department_id
+ORDER BY department_id;
+
+SELECT 
+    department_id,AVG(salary)
+FROM employees
+HAVING AVG(salary)>7000
+GROUP BY department_id
+ORDER BY department_id;
+
+--ROLL UP 
+--GROUP BY절과 함께 사용
+--그룹지어진 결과에 대한 좀 더 상세한 요약을 제공하는 기능 수행
+--일종의 ITEM TOTAL
+
+SELECT 
+    department_id,
+    job_id,
+    SUM(salary)
+FROM employees
+GROUP BY ROLLUP(department_id, job_id);
+
+--CUBE
+--CrossTab에 대한 Summary를 함계 추출하는 함수
+--ROLLup 함수에 의해 출력되는 ITEM TOTAL 값과 함께
+--COLUMN TOTAL 값을 함께 추출
+SELECT 
+    department_id,
+    job_id,
+    SUM(salary)
+FROM employees
+GROUP BY CUBE (department_id,job_id)
+ORDER BY department_id
+
+--------------
+-- SUBQUERY
+--------------
+
+--모든 직원 급여의 중앙값보다 많은 급여를 받는 사원의 목록
+
+--1) 직원 급여의 중앙값?
+--2) 1)번의 결과보다 많은 급여를 받는 직원의 목록
+
+--1) 직업 급여의 중앙값
+SELECT MEDIAN(salary) FROM employees;--6200
+SELECT first_name,salary
+FROM employees
+WHERE salary>=6200;
+
+-- 1),2) 쿼리 합치기
+SELECT first_name, salary
+FROM employees
+WHERE salary>=(SELECT MEDIAN(salary) FROM employees)
+ORDER BY salary DESC;
+
+--Susan보다 늦게 입사한 사원의 정보 
+--1) 수잔의 입사일
+--2) 1)번의 결과보다 늦게 입사한 사원의 정보를 추출
+
+--1) susan의 입사일
+SELECT hire_date FROM employees
+WHERE first_name= 'Susan';--12/06/07
+
+SELECT first_name,hire_date
+FROM employees
+WHERE hire_date>TO_CHAR('12/06/07');
+
+--두 쿼리 합치기
+SELECT first_name, hire_date
+FROM employees
+WHERE hire_date>(SELECT hire_date FROM employees WHERE first_name='Susan');
+
+--연습문제

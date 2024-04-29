@@ -9,7 +9,7 @@ SELECT
     emp.first_name 이름,
     emp.salary 급여,
     dept.department_name 부서명
-    j.job_title 현재업무
+    jobs.job_title 현재업무
 FROM employees emp, deparments dept, jobs j
 WHERE 
     emp.department_id=dept.department_id(+) AND --NULL이 포함된 테이블 쪽애 (+)
@@ -138,7 +138,7 @@ SELECT emp.first_name||' '||emp.last_name,
     jh.end_date
 FROM employees emp
     JOIN job_history jh
-        on emp.employee_id=jh.employee_id
+        ON emp.employee_id=jh.employee_id
 WHERE jh.job_id='AC_ACCOUNT'
 
 --문제8.
@@ -156,7 +156,7 @@ SELECT
     reg.region_name
 FROM
     departments dept,
-    JOIN employees man ON dept.manager_id= man.employee_id
+    JOIN employees man ON dept.employee_id= man.manager_id
     JOIN locations loc ON dept.location_id=loc.location_id
     JOIN countries con ON loc.country_id=con.country_id
     JOIN regions reg ON con.region_id=reg.region_id
@@ -168,3 +168,13 @@ ORDER BY dept.department_id;
 --부서가 없는 직원(Kimberely)도 표시합니다.
 --(106명)
 
+SELECT
+    emp.employee_id,
+    emp.first_name,
+    dept.department_name,
+    man.first_name
+FROM employees emp
+    LEFT OUTER JOIN departments dept
+        ON emp.department_id=dept.department_id
+    JOIN employees man 
+        ON emp.manager_id = man.employee_id;

@@ -5,8 +5,7 @@ FROM employees;
 SELECT*
 FROM jobs;
 --ex01
-SELECT COUNT(*),
-    COUNT(manager_id) haveMngCNt
+SELECT COUNT(manager_id) haveMngCNt
 FROM employees;
 
 --ex02
@@ -14,7 +13,7 @@ SELECT MAX(Salary)as 최고임금, MIN(salary) as 최저임금,
    MAX(salary) - MIN(salary) 임금차이
 FROM employees;
 --ex03
-SELECT TO_CHAR(MAX(hire_date),'YYYY년 MM월 DD일') AS 마지막입사
+SELECT TO_CHAR(MAX(hire_date),'YY년 MM월 DD일','NLS_DATE_LANGUAGE=KOREAN') AS 마지막입사
 FROM employees;
 --ex04
 SELECT ROUND(AVG(salary),1) 평균임금, MAX(salary) 최고임금,
@@ -25,7 +24,9 @@ SELECT  job_id,ROUND(AVG(salary),1) 평균임금, MAX(salary) 최고임금,
         MIN(salary) 최저임금
 FROM employees
 WHERE salary>=2500
-ORDER BY salary DESC;
+GROUP BY job_id
+ORDER BY 최저임금 DESC,평균임금 ASC;
+
 
 --ex06
 SELECT job_id
@@ -56,11 +57,11 @@ FROM employees
 WHERE hire_date >= TO_DATE('15/01/01', 'YY/MM/DD') AND job_id LIKE ('%MAN%') OR
     job_id LIKE('%MGR%')
 GROUP BY job_id
-Having AVG(salary) >=5000
+HAVING AVG(salary) >=5000
 ORDER BY 평균임금 DESC;
 --ex10
 --아래회사는 보너스 지급을 위해 직원을 입사일 기준으로 나눌려고 합니다.  
---입사일이 02/12/31일 이전이면 '창립맴버, 03년은 '03년입사’, 04년은 ‘04년입사’  
+--입사일이 12/12/31일 이전이면 '창립맴버, 13년은 '13년입사’, 14년은 ‘14년입사’  
 --이후입사자는 ‘상장이후입사’ optDate 컬럼의 데이터로 출력하세요. 
 --정렬은 입사일로 오름차순으로 정렬합니다.
 SELECT
@@ -68,12 +69,14 @@ SELECT
     first_name,
     hire_date,
     CASE
-        WHEN hire_date < TO_DATE('2002-12-31', 'YYYY-MM-DD') THEN '창립맴버'
-        WHEN TO_CHAR(hire_date, 'YYYY') = '2003' THEN '03년입사'
-        WHEN TO_CHAR(hire_date, 'YYYY') = '2004' THEN '04년입사'
+        WHEN hire_date < TO_DATE('2012-12-31', 'YYYY-MM-DD') THEN '창립맴버'
+        WHEN TO_CHAR(hire_date, 'YYYY') = '2013' THEN '13년입사'
+        WHEN TO_CHAR(hire_date, 'YYYY') = '2014' THEN '14년입사'
         ELSE '상장이후입사'
     END AS optDate
 FROM
     employees
 ORDER BY
     hire_date ASC;
+    
+    
