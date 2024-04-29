@@ -132,3 +132,64 @@ SELECT
     man.first_name
 FROM employees emp, employees man
 WHERE emp.manager_id = man.employee_id;
+
+--ANSI
+--Join의 의도를 명확하게하고 조인 조건과 SELECTION 조건을 분리하는 효과
+
+SELECT 
+    emp.employee_id, emp.first_name, emp.last_name,
+    dept.department_name
+FROM employees emp,
+    departments dept
+        JOIN departments dept
+            ON emp.department_id =dept.department_id
+ORDER BY dept.department_name ASC, emp.employee_id DESC;
+
+SELECT emp.id 사번,
+    emp.first_name 급여,
+    dept.department_name 부서명,
+    j.job_title 현재업무
+FROM employees emp,departments dept,jobs j
+WHERE emp.departement_id = dept.department_id AND
+    emp.job_id=j.job_id
+ORDER BY emp.employee_id ASC;
+
+--ANSI JOIN
+SELECT emp.job_id 사번,
+    emp.first_name 급여,
+    dept.department_name 부서명,
+    j.job_title 현재업무
+FROM employees emp
+        JOIN departments dept
+            ON emp.department_id =dept.department_id
+                JOIN jobs j
+                    ON emp.job_id=j.job_id
+ORDER BY emp.employee_id ASC;    
+
+--
+SELECT
+    emp.employee_id 사번,
+    emp.first_name 이름,
+    emp.salary 급여,
+    dept.department_name 부서명
+    j.job_title 현재업무
+FROM employees emp, deparments dept, jobs j
+WHERE 
+    emp.department_id=dept.department_id(+) AND --NULL이 포함된 테이블 쪽애 (+)
+    emp.job_id =j.job_id
+ORDER BY emp.employee_id ASC;
+
+
+--ANSI JOIN
+SELECT emp.job_id 사번,
+    emp.first_name 이름,
+    emp.salary 급여,
+    dept.department_name 부서명,
+    j.job_title 현재업무
+FROM employees emp
+        LEFT OUTER JOIN departments dept -- RIGHT OUTER JOIN시 kimberly의 값이 나오지 않을수도
+            ON emp.department_id =dept.department_id
+                JOIN jobs j
+                    ON emp.job_id=j.job_id
+ORDER BY emp.employee_id ASC;    
+    
