@@ -13,7 +13,7 @@ SELECT MAX(Salary)as 최고임금, MIN(salary) as 최저임금,
    MAX(salary) - MIN(salary) 임금차이
 FROM employees;
 --ex03
-SELECT TO_CHAR(MAX(hire_date),'YY년 MM월 DD일','NLS_DATE_LANGUAGE=KOREAN') AS 마지막입사
+SELECT TO_CHAR(MAX(hire_date),'YYYY"년" MM"월" DD"일"') AS 마지막입사
 FROM employees;
 --ex04
 SELECT ROUND(AVG(salary),1) 평균임금, MAX(salary) 최고임금,

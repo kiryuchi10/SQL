@@ -82,14 +82,14 @@ WHERE salary >(SELECT AVG(salary)
 --직원 입사일이 11번째에서 15번째의 직원의 사번, 이름, 급여, 입사일을 입사일 순서로 출력
 --하세요 
 SELECT 
-    *
+       *
 FROM (
     SELECT
         employee_id,
         first_name,
         salary,
         hire_date,
-        ROW_NUMBER() OVER (ORDER BY hire_date) AS rank
+        ROW_NUMBER() OVER (ORDER BY hire_date DESC) AS rank
     FROM 
         employees
 )
