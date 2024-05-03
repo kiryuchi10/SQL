@@ -181,12 +181,50 @@ FROM
     department_id AS 부서번호,
     AVG(salary) AS 평균급여
     FROM employees
-    WHERE 평균급여>=max(평균급여))
+    WHERE salary=max(평균급여));
+--inside FROM   
+SELECT employee_id,
+    first_name,
+    last_name,
+    department_id AS 부서번호,
+    AVG(salary) AS 평균급여,
+    ROW_NUMBER() OVER (ORDER BY e.평균급여) AS row_num
+    FROM employees
+    WHERE salary=max(평균급여)    
 GROUP BY
     employee_id
 ORDER BY
     AVG(salary) DESC
 FETCH FIRST 3 ROW ONLY;
+
+SELECT 
+    e.employee_id,
+    e.first_name,
+    e.last_name,
+    e.job_title,
+    e.salary
+FROM 
+    employees e
+JOIN 
+    departments d ON e.department_id = d.department_id
+WHERE 
+    d.department_id = (
+        SELECT 
+            department_id
+        FROM 
+            (
+            SELECT 
+                department_id,
+                AVG(salary) AS avg_salary
+            FROM 
+                employees
+            GROUP BY 
+                department_id
+            ORDER BY 
+                avg_salary DESC
+            ) AS subquery
+        LIMIT 1
+    );
 --문제8. 
 --평균 급여(salary)가 가장 높은 부서는?  
 SELECT
@@ -199,6 +237,8 @@ GROUP BY
 ORDER BY
     AVG(salary) DESC
 FETCH FIRST 1 ROW ONLY;
+
+
 --문제9. 
 --평균 급여(salary)가 가장 높은 지역은?  
 SELECT
