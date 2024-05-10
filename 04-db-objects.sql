@@ -116,3 +116,10 @@ DROP SEQ_AUTHOR_ID;
 --pk는 SEQUENCE 객체로부터 생성
 INSERT INTO author (author_id,author_name, author_desc)
 VALUES (
+
+SELECT * FROM author;
+SELECT * FROM user_objects WHERE OBJECT_TYPE='SEQUENCE';
+DELETE FROM author;
+COMMIT;
+
+SELECT * FROM author;
