@@ -253,6 +253,8 @@ FROM dual;
 SELECT * 
 FROM nls_session_parameters;
 
+SELECT CONCAT('Hello World', ' ', '!!!!!!')
+FROM DUAL;
 
 
 
@@ -316,6 +318,8 @@ FROM dual;
 SELECT '2012-09-24 13:48:00', 
     TO_DATE('2012-09-24 13:48:00','YYYY-MM-DD HH24:MI:SS')
 FROM dual;
+
+SELECT CONCAT('Hello World', ' ', '!!!!!!');
 
 
 --날짜 연산

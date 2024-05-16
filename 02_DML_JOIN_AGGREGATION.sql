@@ -118,7 +118,7 @@ FROM employees emp FULL OUTER JOIN
 SELECT * FROM employees emp NATURAL JOIN departments dept;
 
 SELECT * FROM employees emp JOIN departments dept ON emp.department_id=dept.department_id;
-SELECT * FROM employees emp JOIN departments dept on emp.manager_id=dept.manager_id AND emp.department_id=dept.department_id;
+SELECT * FROM employees emp JOIN departments dept ON emp.manager_id=dept.manager_id AND emp.department_id=dept.department_id;
 
 
 
